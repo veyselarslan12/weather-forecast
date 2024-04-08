@@ -1,54 +1,39 @@
-function searchCity() {
-  var cityName = document.getElementById("cityInput").value.trim();
-  if (cityName === "") return; // Don't proceed if input is empty
+// const apiKey = '0e65efea80d9a0647c2d571b6099538a';
 
-  // Append searched city to the list
-  var searchedCitiesDiv = document.getElementById("searchedCities");
-  var cityItem = document.createElement("a");
-  cityItem.href = "#"; // You can link to the city's forecast page if you want
-  cityItem.classList.add("list-group-item", "list-group-item-action","list-group-item-primary" );
-  cityItem.textContent = cityName;
-  searchedCitiesDiv.appendChild(cityItem);
+// fetch(`https://api.openweathermap.org/data/2.5/weather?q=${cityName}&appid=${apiKey}&units=imperial`)
+//   .then(function(response){
+//     console.log(response)
+//   })
 
-  // Clear the input field after adding the city
-  document.getElementById("cityInput").value = "";
 
-  // Add click event listener to each city item
-  cityItem.addEventListener("click", function () {
-    // Implement what happens when you click on a city item
-    console.log("Clicked on", cityName);
-  });
-}
+let searchedCities = JSON.parse(localStorage.getItem('searchedCities')) || [];
 
-// function searchCity() {
-//   var cityName = document.getElementById("cityInput").value.trim();
-//   if (cityName === "") return; // Don't proceed if input is empty
+    function searchCity() {
+        const input = document.getElementById('cityInput').value.trim();
 
-//   // Fetch weather data for the selected city
-//   fetchWeatherData(cityName);
-// }
+        // Check if input is not empty and not already searched
+        if (input && !searchedCities.includes(input)) {
+            searchedCities.unshift(input); // Add the city to the beginning of the array
+            savedCities();
+            displayCities();
+            document.getElementById('cityInput').value = ''; // Clear the input field
+        }
+    }
 
-// function fetchWeatherData(cityName) {
-//   var apiKey = "YOUR_API_KEY"; // Replace this with your actual API key
-//   var apiUrl =
-//     "https://api.openweathermap.org/data/2.5/forecast?q=" +
-//     cityName +
-//     "&appid=" +
-//     apiKey;
+    function displayCities() {
+        const searchedCitiesElement = document.getElementById('searchedCities');
+        searchedCitiesElement.innerHTML = ''; // Clear previous cities
 
-//   fetch(apiUrl)
-//     .then((response) => response.json())
-//     .then((data) => {
-//       // Process the weather data and display it on the webpage
-//       displayWeatherData(data);
-//     })
-//     .catch((error) => {
-//       console.error("Error fetching weather data:", error);
-//     });
-// }
+        // Display all searched cities
+        searchedCities.forEach(city => {
+            const listItem = document.createElement('a');
+            listItem.href = '#'; // You can add a link to each city if you want
+            listItem.className = 'list-group-item list-group-item-action list-group-item-warning';
+            listItem.textContent = city;
+            searchedCitiesElement.appendChild(listItem);
+        });
+    }
 
-// function displayWeatherData(weatherData) {
-//   // Example of how you might display the weather data on the webpage
-//   console.log("Weather data:", weatherData);
-//   // You can parse the weather data and display it as per your requirement
-// }
+    function savedCities() {
+        localStorage.setItem('searchedCities', JSON.stringify(searchedCities));
+    }
