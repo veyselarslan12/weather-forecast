@@ -13,3 +13,8 @@ nav h2 {
     padding: 25px;
     letter-spacing: 2px;
 }
+
+.weather-icon {
+    height: 30px;
+    width: 30px;
+}
