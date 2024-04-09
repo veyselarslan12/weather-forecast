@@ -19,21 +19,18 @@
         <div class="col-lg-3">
           <div class="mt-5">
             <div class="row p-2">
-              <div class="input-group mb-3">
-                <input
-                  type="text"
-                  id="cityInput"
-                  class="form-control text-center"
-                  placeholder="Enter city name"
-                />
-                <div class="input-group-append">
-                  <button
-                    class="btn btn-warning"
-                    type="button"
-                  >
-                    Search For City
-                  </button>
-                </div>
+              <div class="col-md-9 offset-md-1">
+                <form>
+                  <div class="form-group">
+                    <div class="input-group">
+                      <input type="text" class="form-control" placeholder="Search for City" aria-label="Search" aria-describedby="search-button"
+                      id="cityInput">
+                      <div class="input-group-append">
+                        <button class="btn btn-warning" type="button" id="search-button">Search for City</button>
+                      </div>
+                    </div>
+                  </div>
+                </form>
               </div>
               <div id="searchedCities" class="list-group">
                 <!-- Searched cities will be displayed here -->
@@ -44,10 +41,14 @@
         <div class="container col-lg-9 row">
           <div class="card mt-5">
             <div class="card-body mt-1">
-              <h2 class="card-title">Card title</h2>
-              <p class="card-text">Temp:</p>
-              <p class="card-text">Wind:</p>
-              <p class="card-text">Humidity:</p>
+              <h2 class="card-title">
+                <span id="span-city-name"></span>
+                <span id="span-date"></span>
+                <span id="span-icon"></span>
+              </h2>
+              <p class="card-text">Temp: <span id="span-temp"></span> °F</p>
+              <p class="card-text">Wind: <span id="span-wind"></span> Mph</p>
+              <p class="card-text">Humidity: <span id="span-humidity"></span> %</p>
             </div>
           </div>
           <div class="row">
