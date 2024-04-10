@@ -25,11 +25,17 @@ function displayCities() {
     const searchedCitiesElement = document.getElementById("searchedCities");
     searchedCitiesElement.innerHTML = "";
 
-    searchedCities.forEach((city) => {
+    searchedCities.forEach((city, index) => {
         const listItem = document.createElement("a");
         listItem.href = "#";
         listItem.className = "list-group-item list-group-item-action list-group-item-warning";
+        listItem.id = `city-${index}`;
         listItem.textContent = city;
+
+        listItem.addEventListener('click', function() {
+          getCityData(city)
+        })
+
         searchedCitiesElement.appendChild(listItem);
     });
 }
@@ -82,3 +88,7 @@ function getForecast(lat, lon) {
             console.error("Failed to fetch forecast data:", error);
         });
 }
+
+
+
+
