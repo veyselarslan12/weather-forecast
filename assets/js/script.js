@@ -85,9 +85,13 @@ function getForecast(lat, lon) {
             document.getElementById("span-icon").innerHTML = `<img src="http://openweathermap.org/img/wn/${icon}.png" alt="Weather Icon">`;
             document.getElementById("span-date").textContent = date;
 
+           
+            document.getElementById("card-container").innerHTML = "";
+            
+
             const datesArray = []
             for(const weatherObject of json.list) {
-              const yearDate = weatherObject.dt_txt.split(' ')[0];
+              const yearDate = new Date(weatherObject.dt_txt.split(' ')[0]).toLocaleDateString();
               
               if(!datesArray.includes(yearDate) ){
                 datesArray.push(yearDate)
@@ -103,6 +107,8 @@ function getForecast(lat, lon) {
 
 
 function renderCardElement (weatherObject, yearDate){
+    console.log(weatherObject)
+  const forecastContainer = document.querySelector('#card-container')  
   const card = document.createElement( "div" );
   card.classList.add("card", "text-bg-secondary");
   const cardBody = document.createElement("div");
@@ -115,8 +121,24 @@ function renderCardElement (weatherObject, yearDate){
   windEl.classList.add("card-text");
   const humidityEl = document.createElement("p");
   humidityEl.classList.add("card-text");
+  const imgEl = document.createElement('img')
+  imgEl.setAttribute('src', `http://openweathermap.org/img/wn/${weatherObject.weather[0].icon}.png` )
 
+    
   h5.innerText = yearDate
-  tempEl.innerText = `Temp: ${temp}`
+  tempEl.innerText = `Temp: ${weatherObject.main.temp} °F `
+  windEl.innerText = `Wind: ${weatherObject.wind.speed} mph`
+  humidityEl.innerText = `Humidity: ${weatherObject.main.humidity} %`
+  
+  forecastContainer.appendChild(card)
+  card.appendChild(cardBody)
+  cardBody.appendChild(h5)
+  h5.appendChild(imgEl)
+  cardBody.appendChild(tempEl)
+  cardBody.appendChild(windEl)
+  cardBody.appendChild(humidityEl)
+  
+
+
 
 }
