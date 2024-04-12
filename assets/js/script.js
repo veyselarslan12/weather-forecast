@@ -1,13 +1,15 @@
+// Open Weather Api Key
 const apiKey = "0e65efea80d9a0647c2d571b6099538a";
 
 let defaultCity = "Madison";
+// Getting saved cities from local storage
 const searchedCities = JSON.parse(localStorage.getItem("searchedCities")) || [];
-
+// Getting data from Open Weather Api to show default city weather
 document.addEventListener("DOMContentLoaded", function() {
     getCityData(defaultCity);
 });
-
-function searchCity(event) {
+// Search for a city and display the current and 5-day forecast
+function searchCity(event) { 
     event.preventDefault();
     const cityName = document.getElementById("cityInput").value;
 
@@ -20,7 +22,7 @@ function searchCity(event) {
 
     getCityData(cityName);
 }
-
+// Displays cities and creates list items down below search bar
 function displayCities() {
     const searchedCitiesElement = document.getElementById("searchedCities");
     searchedCitiesElement.innerHTML = "";
@@ -39,14 +41,15 @@ function displayCities() {
         searchedCitiesElement.appendChild(listItem);
     });
 }
-
+// Saving cities to local storages
 function savedCities() {
     localStorage.setItem("searchedCities", JSON.stringify(searchedCities));
 }
-
-const button = document.querySelector(".btn");
+// Search button event listener 
+const button = document.querySelector(".btn"); 
 button.addEventListener("click", searchCity);
 
+// Fetching data from Open Weather Api 
 function getCityData(city) {
     fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=imperial`)
         .then(function(response) {
@@ -64,13 +67,15 @@ function getCityData(city) {
         });
 }
 
+// Fetching forecast data from Open Weather Api
 function getForecast(lat, lon) {
     fetch(`https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${apiKey}&units=imperial`)
         .then(function(response) {
             return response.json();
         })
         .then(function(json) {
-            console.log(json)
+            // console.log(json)
+            // Creating main card for weather data
             const cityName = json.city.name;
             const temp = json.list[0].main.temp;
             const wind = json.list[0].wind.speed;
@@ -78,6 +83,7 @@ function getForecast(lat, lon) {
             const icon = json.list[0].weather[0].icon;
             const date = new Date(json.list[0].dt * 1000).toLocaleDateString();
 
+            // Selecting spans for weather data
             document.getElementById("span-city-name").textContent = cityName;
             document.getElementById("span-temp").textContent = temp;
             document.getElementById("span-wind").textContent = wind;
@@ -88,7 +94,7 @@ function getForecast(lat, lon) {
            
             document.getElementById("card-container").innerHTML = "";
             
-
+            
             const datesArray = []
             for(const weatherObject of json.list) {
               const yearDate = new Date(weatherObject.dt_txt.split(' ')[0]).toLocaleDateString();
@@ -105,9 +111,9 @@ function getForecast(lat, lon) {
         });
 }
 
-
+// Creating and rendering the cards for the forecast data 
 function renderCardElement (weatherObject, yearDate){
-    console.log(weatherObject)
+//   console.log(weatherObject)
   const forecastContainer = document.querySelector('#card-container')  
   const card = document.createElement( "div" );
   card.classList.add("card", "text-bg-secondary");
@@ -130,6 +136,7 @@ function renderCardElement (weatherObject, yearDate){
   windEl.innerText = `Wind: ${weatherObject.wind.speed} mph`
   humidityEl.innerText = `Humidity: ${weatherObject.main.humidity} %`
   
+  // Created 5 days weather cards and appended them to the card container
   forecastContainer.appendChild(card)
   card.appendChild(cardBody)
   cardBody.appendChild(h5)
@@ -138,7 +145,4 @@ function renderCardElement (weatherObject, yearDate){
   cardBody.appendChild(windEl)
   cardBody.appendChild(humidityEl)
   
-
-
-
 }
